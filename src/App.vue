@@ -2,7 +2,6 @@
   <div id="app">
     <div id="nav">
       <router-link to="/main">Main</router-link> |
-      <router-link to="/single-giveaway">Single Give Away</router-link> |
       <router-link to="/sort">Sort By</router-link> |
     </div>
     <router-view/>

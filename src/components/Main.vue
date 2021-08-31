@@ -1,10 +1,11 @@
 <template>
-  <div class="Main">
+  <div class="Main" v-if="$store.state.error === false">
     <div class="card"
          v-for="(item,index) in items "
          :key="index"
-          @click="getItem(item.id)"
+         @click="getItem(item.id)"
     >
+
       <div class="card-image">
         <img :src=" item.image">
       </div>
@@ -13,14 +14,22 @@
           {{ item.title }}
         </h4>
       </div>
-      <div class="card-bottom">
+      <div class="card-bottom"
+      >
         Price:
-        <div class="price-field"> {{ item.worth === 'N/A' ? item.worth = 'Free' : item.worth }}</div>
-
+        <div
+            :class="[item.worth.substring(1) < 10 || item.worth === 'Free' ? 'price-in-green' : 'price-in-yellow']">
+          {{ item.worth === 'N/A' ? item.worth = 'Free' : item.worth }}
+        </div>
       </div>
 
     </div>
 
+  </div>
+  <div v-else
+  class="error-message"
+  >
+   <h3> {{$store.state.errorMessage}} </h3>
   </div>
 </template>
 
@@ -29,15 +38,13 @@ export default {
   name: "Main",
   props: ['items'],
   methods: {
-    getItem(id){
-      this.$router.push('/single-giveaway/'+ id)
+    getItem(id) {
+      this.$router.push('/single-giveaway/' + id)
 
-    }
+    },
   },
   created() {
-    fetch(`http://167.99.138.67:4545/giveaways/all`)
-        .then(response => response.json())
-        .then(data => this.$store.commit('setAll', data))
+    this.$store.dispatch('getData')
   }
 }
 </script>
@@ -54,7 +61,7 @@ export default {
   margin: 5px;
   width: 300px;
   height: 400px;
-  background-color: #42b983;
+  background-color: #8be1b9;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -80,7 +87,18 @@ export default {
 
 }
 
-.price-field {
-  color: #f60505;
+.price-in-yellow {
+  color: yellow;
+}
+
+.price-in-green {
+  color: green;
+}
+.error-message{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
 }
 </style>
