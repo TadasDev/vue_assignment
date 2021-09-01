@@ -19,17 +19,16 @@ export default new Vuex.Store({
         errorMessage: {},
         error: false,
         totalPages: '',
-        pages:[],
-        page:[],
-        currentIndex:0
+        pages: [],
+        page: [],
+        currentIndex: 0
     },
     mutations: {
         setAll(state, data) {
             state.data = []
             state.data = data
         },
-        SetIndex(state, index){
-            console.log(index)
+        SetIndex(state, index) {
             state.currentIndex = index
             state.page = state.pages[index]
         },
@@ -52,8 +51,8 @@ export default new Vuex.Store({
     actions: {
         async getData(context) {
             await fetch(`http://167.99.138.67:4545/giveaways/all`)
-              .then(response => response.json())
-               .then(data =>
+                .then(response => response.json())
+                .then(data =>
                     context.commit('setAll', data)
                 )
             const arrayLength = context.state.data.length
@@ -64,10 +63,9 @@ export default new Vuex.Store({
                 const piece = context.state.data.slice(i, i + 10)
                 context.state.pages.push(piece)
             }
-            if (context.state.currentIndex === 0){
-                context.state.page =  context.state.pages[0]
+            if (context.state.currentIndex === 0) {
+                context.state.page = context.state.pages[0]
             }
-            // console.log( context.state.page)
         },
         async getItem(context, id) {
             const res = await fetch(`http://167.99.138.67:4545/giveaways/id/${id}`)
@@ -91,16 +89,14 @@ export default new Vuex.Store({
             const numOfPages = context.state.sortedData.length / 10
             context.state.totalPages = Math.ceil(numOfPages)
 
-
             context.state.pages = []
             for (let i = 0; i < arrayLength; i += 10) {
                 const piece = context.state.sortedData.slice(i, i + 10)
                 context.state.pages.push(piece)
             }
-
-            if (context.state.currentIndex === 0){
-                console.log(context.state.currentIndex)
-                context.state.page =  context.state.pages[0]
+            console.log( context.state.pages)
+            if (context.state.currentIndex === 0) {
+                context.state.page = context.state.pages[0]
             }
         },
     },
