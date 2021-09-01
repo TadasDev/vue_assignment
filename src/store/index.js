@@ -17,11 +17,21 @@ export default new Vuex.Store({
         selected: [],
         sortedData: [],
         errorMessage: {},
-        error:false
+        error: false,
+        totalPages: '',
+        pages:[],
+        page:[],
+        currentIndex:0
     },
     mutations: {
         setAll(state, data) {
+            state.data = []
             state.data = data
+        },
+        SetIndex(state, index){
+            console.log(index)
+            state.currentIndex = index
+            state.page = state.pages[index]
         },
         setItem(state, item) {
             state.item = item
@@ -40,10 +50,24 @@ export default new Vuex.Store({
 
     },
     actions: {
-        getData(context) {
-            fetch(`http://167.99.138.67:4545/giveaways/all`)
-                .then(response => response.json())
-                .then(data => context.commit('setAll', data))
+        async getData(context) {
+            await fetch(`http://167.99.138.67:4545/giveaways/all`)
+              .then(response => response.json())
+               .then(data =>
+                    context.commit('setAll', data)
+                )
+            const arrayLength = context.state.data.length
+            const numOfPages = context.state.data.length / 10
+            context.state.totalPages = Math.ceil(numOfPages)
+
+            for (let i = 0; i < arrayLength; i += 10) {
+                const piece = context.state.data.slice(i, i + 10)
+                context.state.pages.push(piece)
+            }
+            if (context.state.currentIndex === 0){
+                context.state.page =  context.state.pages[0]
+            }
+            // console.log( context.state.page)
         },
         async getItem(context, id) {
             const res = await fetch(`http://167.99.138.67:4545/giveaways/id/${id}`)
@@ -63,8 +87,21 @@ export default new Vuex.Store({
             } else {
                 context.commit('sortedData', data)
             }
+            const arrayLength = context.state.sortedData.length
+            const numOfPages = context.state.sortedData.length / 10
+            context.state.totalPages = Math.ceil(numOfPages)
 
 
+            context.state.pages = []
+            for (let i = 0; i < arrayLength; i += 10) {
+                const piece = context.state.sortedData.slice(i, i + 10)
+                context.state.pages.push(piece)
+            }
+
+            if (context.state.currentIndex === 0){
+                console.log(context.state.currentIndex)
+                context.state.page =  context.state.pages[0]
+            }
         },
     },
     modules: {},

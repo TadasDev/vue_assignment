@@ -1,24 +1,28 @@
 <template>
-<div>
-  <Sort />
-  <Main :items="items" />
-</div>
+  <div>
+    <Sort/>
+    <Main :items="items"
+    />
+    <Paginate/>
+  </div>
 </template>
 
 <script>
 
 import Sort from "@/components/Sort";
 import Main from "@/components/Main";
+import Paginate from "@/components/Paginate";
 
 export default {
   name: "SortGiveAway",
-  components:{
+  components: {
+    Paginate,
     Main,
     Sort
   },
-  computed:{
-    items(){
-      return this.$store.state.sortedData
+  computed: {
+    items() {
+      return this.$store.state.page
     }
   },
 }

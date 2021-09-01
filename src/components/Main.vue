@@ -27,9 +27,9 @@
 
   </div>
   <div v-else
-  class="error-message"
+       class="error-message"
   >
-   <h3> {{$store.state.errorMessage}} </h3>
+    <h3> {{ $store.state.errorMessage }} </h3>
   </div>
 </template>
 
@@ -40,10 +40,9 @@ export default {
   methods: {
     getItem(id) {
       this.$router.push('/single-giveaway/' + id)
-
     },
   },
-  created() {
+  mounted() {
     this.$store.dispatch('getData')
   }
 }
@@ -94,7 +93,8 @@ export default {
 .price-in-green {
   color: green;
 }
-.error-message{
+
+.error-message {
   display: flex;
   justify-content: center;
   align-items: center;
