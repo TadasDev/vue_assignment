@@ -40,22 +40,12 @@
         <button @click="goToWebsite(item.open_giveaway_url)"> Get Your Game at this website</button>
       </div>
     </div>
-    <vue-qrcode v-bind:value="qrValue" />
   </div>
 </template>
 
 <script>
-import VueQrcode from 'vue-qrcode'
 export default {
   name: "Single",
-  components:{
-    VueQrcode
-  },
-  data(){
-    return{
-      qrValue : "My secret value"
-    }
-  },
   methods: {
     goToWebsite: function (url) {
       window.location.href = url;
